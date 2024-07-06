@@ -1,5 +1,5 @@
-from parser.pars import pars_master, search_master_to_id, search_massge_to_id
-from FSM.fsm import FSMBooking
+from logic.logic import pars_master, search_master_to_id, search_massge_to_id
+from state.states import FSMBooking
 from keyboards.keyboards_mas import add_keyboard, get_massage_keyboard
 from config.config import load_config, pg_manager
 

@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from lexicon.lexicon import LEXICON_BUTTONS
-from parser.pars import pars_massages, pars_massages_mast, massages
+from logic.logic import pars_massages, pars_massages_mast, massages
 
 
 mast_keyboard = []

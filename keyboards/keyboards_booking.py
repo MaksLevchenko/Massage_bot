@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from lexicon.lexicon import LEXICON_MASSAGES, LEXICON_BUTTONS
-from parser.pars import pars_date, pars_time
+from logic.logic import pars_date, pars_time
 
 
 def get_date_keyboard(master_id: str, massage_id: str, month: str):
