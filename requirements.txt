@@ -1,0 +1,5 @@
+aiogram==3.0.0
+python-dotenv
+asyncpg
+asyncio==3.4.3
+requests
