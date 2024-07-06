@@ -53,6 +53,7 @@ async def process_cancel_command_state(message: Message, state: FSMContext):
     # Сбрасываем состояние и очищаем данные, полученные внутри состояний
     await state.clear()
     
+# Этот хэндлер будет срабатывать на команду "/accaunt" в любых состояниях
 @router.message(Command(commands='accaunt'))
 async def accaunt(message: Message, state: FSMContext):
     id = int(message.from_user.id)
@@ -70,6 +71,7 @@ async def accaunt(message: Message, state: FSMContext):
                 text=f"К сожалению у Вас ещё нет аккаунта.",
                 )
 
+# Этот хэндлер будет срабатывать на вызов мастеров в любых состояниях
 @router.callback_query(F.data == 'masters')
 async def process_masters_pres(callback: CallbackQuery | Message):
     await callback.message.delete()
@@ -84,6 +86,7 @@ async def process_masters_pres(callback: CallbackQuery | Message):
             reply_markup=markup
             )
                 
+# Этот хэндлер будет срабатывать на команду "/masters" в любых состояниях
 @router.message(Command(commands='masters'))
 async def process_masters_command_pres(message: Message, state: FSMContext):
     user = {}
@@ -114,6 +117,7 @@ async def process_masters_command_pres(message: Message, state: FSMContext):
                 reply_markup=markup
                 )
 
+# Этот хэндлер будет срабатывать на нажатие кнопки "Подробнее о мастере" в любых состояниях
 @router.callback_query(F.data.startswith('about_master'))
 async def about_master(callback: CallbackQuery, state: FSMContext):
     master_id = int(callback.data.split()[-1])
@@ -147,6 +151,7 @@ async def about_master(callback: CallbackQuery, state: FSMContext):
             reply_markup=markup
             )
 
+# Этот хэндлер будет срабатывать на нажатие кнопки "Наши массажи" в любых состояниях
 @router.callback_query(F.data == 'massages')
 async def process_massages_pres(callback: CallbackQuery):
     
@@ -157,6 +162,7 @@ async def process_massages_pres(callback: CallbackQuery):
         reply_markup=markup
         )
         
+# Этот хэндлер будет срабатывать на команду "/massages" в любых состояниях
 @router.message(Command(commands = 'massages'))
 async def process_massages_command(message: Message):
         
@@ -167,6 +173,7 @@ async def process_massages_command(message: Message):
         reply_markup=markup
         )
 
+# Этот хэндлер будет срабатывать на нажатие кнопки "Наши массажи" в любых состояниях
 @router.callback_query(Command(commands = 'massages'))
 async def process_massages_command(callback: CallbackQuery):
         
@@ -177,6 +184,7 @@ async def process_massages_command(callback: CallbackQuery):
         reply_markup=markup
         )
 
+# Этот хэндлер будет срабатывать на нажатие кнопки на массаж в любых состояниях
 @router.callback_query(F.data.startswith('mass'))
 async def about_massege(callback: CallbackQuery, state: FSMContext):
     massage_id = int(callback.data.split()[-1])
@@ -208,6 +216,7 @@ async def about_massege(callback: CallbackQuery, state: FSMContext):
             #print('net')
             await state.set_state(FSMBooking.book_select_mast)
         
+# Этот хэндлер будет срабатывать на команду "/booking" в любых состояниях
 @router.message(Command(commands='booking'), StateFilter(default_state))
 async def press_booking(message: Message, state: FSMContext):
     user = {}
@@ -234,6 +243,7 @@ async def press_booking(message: Message, state: FSMContext):
             reply_markup=markup
             )
 
+# Этот хэндлер будет срабатывать на нажатие кнопки  "Записаться" в любых состояниях
 @router.callback_query(F.data == 'booking', StateFilter(default_state))
 async def booking(callback: CallbackQuery, state: FSMContext):
     user = {}
@@ -260,6 +270,7 @@ async def booking(callback: CallbackQuery, state: FSMContext):
             reply_markup=markup
             )   
 
+# Этот хэндлер будет срабатывать на нажатие кнопки "Выбрать мастера"
 @router.callback_query(StateFilter(FSMBooking.book_select_mast))
 async def press_booking(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()

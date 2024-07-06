@@ -8,20 +8,16 @@ from logic.logic import pars_massages, pars_massages_mast, massages
 mast_keyboard = []
 
 massages = pars_massages()
+
+# Создание кнопок
 def create_button(text: str, callback_data: str | int) -> InlineKeyboardButton:
     button = InlineKeyboardButton(
         text=text,
         callback_data=callback_data
     )
     return button
-    
-def create_keyboard(*args):
-    keyboard = []
-    for button in args:
-        keyboard.append(button)
-    markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
-    return markup
-  
+      
+# Добавление клавиатуры
 def add_keyboard(width: int, *args: str | tuple[str], **kwargs: str) -> InlineKeyboardMarkup:
         
     kb_builder = InlineKeyboardBuilder()
@@ -55,7 +51,8 @@ def add_keyboard(width: int, *args: str | tuple[str], **kwargs: str) -> InlineKe
     kb_builder.row(*buttons, width=width)
     
     return kb_builder.as_markup()
-    
+
+# Добавление клавиатуры с массажами  
 def get_massage_keyboard():
     
     kb_builder = InlineKeyboardBuilder()
@@ -71,6 +68,7 @@ def get_massage_keyboard():
     massageses = kb_builder.row(*mas_keyboard,     width=1)
     return massageses.as_markup()
 
+# Добавление клавиатуры с массажами для конкретного мастера
 def get_mast_massage_keyboard(master_id: str):
     
     kb_builder = InlineKeyboardBuilder()

@@ -23,7 +23,7 @@ config = load_config()
 admin_ids = config.tg_bot.admin_ids
 
 
-
+# Этот хэндлер будет срабатывать после нажтия на кнопку "Заполнить анкету"
 @router.callback_query(F.data.contains('start_anketa'))
 async def start_anketa(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -31,7 +31,8 @@ async def start_anketa(callback: CallbackQuery, state: FSMContext):
         text='Введите свой номер телефона в формате: "89123456789"'
     )
     await state.set_state(FSMEditUser.fill_phone)
-        
+
+# Этот хэндлер будет срабатывать ввода номер телефона      
 @router.message(StateFilter(FSMEditUser.fill_phone),
                 F.text.replace('-', '').replace(' ', '').isdigit()
                 and F.text.replace('-', '').replace(' ', '').replace('+', '').len() >= 11)
@@ -45,7 +46,8 @@ async def process_phone_sent(message: Message, state: FSMContext):
             text='Спасибо, а теперь введите Ваше имя:'
         )
         await state.set_state(FSMEditUser.fill_name)
-        
+
+# Этот хэндлер будет срабатывать если введено что-то непохожее на номер телефона       
 @router.message(StateFilter(FSMEditUser.fill_phone))
 async def warning_not_phone(message: Message):
     await message.answer(
@@ -54,7 +56,8 @@ async def warning_not_phone(message: Message):
              'Если Вы хотите прервать заполнение анкеты - '
              'нажмите "отмена" в меню'
     )
-    
+
+# Этот хэндлер будет срабатывать после ввода номера телефона и предложит написать коментарий  
 @router.message(StateFilter(FSMEditUser.fill_name), F.text.isalpha())
 async def process_name_sent(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
@@ -64,7 +67,8 @@ async def process_name_sent(message: Message, state: FSMContext):
         reply_markup=markup
     )
     await state.set_state(FSMEditUser.save_anketa)
-    
+
+# Этот хэндлер будет срабатывать если введено что-то непохожее на имя
 @router.message(StateFilter(FSMEditUser.fill_name))
 async def warning_not_name(message: Message):
     await message.answer(
@@ -72,7 +76,8 @@ async def warning_not_name(message: Message):
              'Пожалуйста, введите Ваше имя\n\n'
              'Если Вы хотите прервать заполнение анкеты - '
              'нажмите "отмена" в меню')
-    
+
+# Этот хэндлер будет срабатывать если нажать "пропустить коментарий"  
 @router.callback_query(StateFilter(FSMEditUser.save_anketa), F.data=='skip_comment')
 async def skip_comment(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -83,7 +88,8 @@ async def skip_comment(callback: CallbackQuery, state: FSMContext):
         reply_markup=markup
     )
     await state.set_state(FSMEditUser.upload)
-    
+
+# Этот хэндлер будет срабатывать когда всё введено и предложит проверить данные
 @router.message(StateFilter(FSMEditUser.save_anketa))
 async def view_user(message: Message, state: FSMContext):
     await message.delete()
@@ -96,7 +102,8 @@ async def view_user(message: Message, state: FSMContext):
         reply_markup=markup
     )
     await state.set_state(FSMEditUser.upload)
-    
+
+# Этот хэндлер будет срабатывать если нажать на "да" и сохранит данные в базу данных 
 @router.callback_query(StateFilter(FSMEditUser.upload), F.data=='yes')
 async def upload_user(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -124,7 +131,8 @@ async def upload_user(callback: CallbackQuery, state: FSMContext):
         text='Спасибо за уделённое время!\n\nТеперь можете записаться на сеанс!'
     )
     await state.clear()
-    
+
+# Этот хэндлер будет срабатывать если нажать на "нет" и не сохранит данные в базу данных   
 @router.callback_query(StateFilter(FSMEditUser.upload), F.data=='no')
 async def cancel_snketa(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -133,7 +141,8 @@ async def cancel_snketa(callback: CallbackQuery, state: FSMContext):
         text='Начать заполнение анкеты сначала?',
         reply_markup=markup
     )
-    
+
+# Этот хэндлер будет срабатывать если нажать на "нет" и не начинать заполнение анкеты снова  
 @router.callback_query(F.data.contains('not_again'))
 async def cancel_anketa(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()

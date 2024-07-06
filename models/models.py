@@ -1,3 +1,4 @@
+# Модель мастер
 class Master():
     id: int
     name: str
@@ -6,6 +7,7 @@ class Master():
     rating: float
     massages_ids: list
 
+# Модель клиент
 class Client():
     id: int
     name: str
@@ -13,6 +15,7 @@ class Client():
     comment: str
     course: list[int]
 
+# Модель массажа
 class Massage():
     id: int
     name: str

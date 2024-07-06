@@ -23,6 +23,7 @@ admin_ids = config.tg_bot.admin_ids
 
 massages = pars_massages()
 
+# Этот хэндлер будет срабатывать на нажатие кнопки "Выбрать мастера"
 @router.callback_query(StateFilter(FSMBooking.book_select_mass))
 async def press_select_massage(callback: CallbackQuery, state: FSMContext):
     master_id =  callback.data.split()[-1]
@@ -34,7 +35,8 @@ async def press_select_massage(callback: CallbackQuery, state: FSMContext):
         reply_markup=markup
     )
     await state.set_state(FSMBooking.book_select_date)
-        
+
+# Этот хэндлер будет срабатывать после выбора массажа и предложит выбрать дату      
 @router.callback_query(StateFilter(FSMBooking.book_select_date) or StateFilter(FSMBooking.book_select_time))
 async def booking_select_date(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -66,23 +68,26 @@ async def booking_select_date(callback: CallbackQuery, state: FSMContext):
     
     await state.set_state(FSMBooking.book_select_time)
 
-
+# Этот хэндлер будет срабатывать после выбора даты и предложит выбрать время
 @router.callback_query(StateFilter(FSMBooking.book_select_time))
 async def booking_select_time(callback: CallbackQuery, state: FSMContext):
 
     await state.update_data(date=callback.data)
     data = await state.get_data()
     
-    data = await state.get_data()
     markup = get_time_keyboard(data['master_id'], data['massage_id'], data['date'])
+    if markup.inline_keyboard:
+        await callback.message.answer(
+            text='Доступное время для записи:',
+            reply_markup=markup
+            )
+        await state.set_state(FSMBooking.book_confirmation)
+    else:
+        await callback.message.answer(
+            text='К сожалению на выбранную дату нет свободных окошек!\n\nПожалуйста выберите другую дату.',
+            )
 
-    await callback.message.answer(
-        text='Доступное время для записи:',
-        reply_markup=markup
-        )
-    await state.set_state(FSMBooking.book_confirmation)
-
-
+# Этот хэндлер будет срабатывать после выбора времени и предложит подтвердить запись 
 @router.callback_query(StateFilter(FSMBooking.book_confirmation))
 async def booking_confirmation(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -105,6 +110,7 @@ async def booking_confirmation(callback: CallbackQuery, state: FSMContext):
     )
     await state.set_state(FSMBooking.book_upload)
 
+# Этот хэндлер будет срабатывать после подтверждения данных и предложит записаться
 @router.callback_query(StateFilter(FSMBooking.book_upload), F.data=='yes')
 async def upload_booking(callback: CallbackQuery, state: FSMContext):
     booking_data = await state.get_data()
@@ -151,7 +157,8 @@ async def upload_booking(callback: CallbackQuery, state: FSMContext):
             reply_markup=markup
         )
     await state.clear()
-    
+
+# Этот хэндлер будет срабатывать после нажатия на кнопку "Нет"  
 @router.callback_query(StateFilter(FSMBooking.book_upload), F.data=='no')
 async def cancel_booking(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -161,4 +168,3 @@ async def cancel_booking(callback: CallbackQuery, state: FSMContext):
         reply_markup=markup
     )
     await state.clear()
-

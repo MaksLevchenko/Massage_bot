@@ -1,3 +1,4 @@
+# Словарь для кнопки меню
 LEXICON_COMMANDS_MENU_REG: dict[str, str] = {
     '/masters': 'Наши мастера',
     '/booking': 'Записаться на массаж',
@@ -6,23 +7,7 @@ LEXICON_COMMANDS_MENU_REG: dict[str, str] = {
     '/cancel': 'Отмена' 
 }
 
-LEXICON_MASSAGES: dict[str, str] = {
-    'Общий массаж': 'general_massage',
-    'Спортивный массаж': 'sport_massage',
-    'Лимфодреннажный массаж': 'lymphatic_massage',
-    'Массаж спины': 'back_massage',
-    'Массаж лица': '',
-    'Антицеллюлитный массаж': ' ',
-}
-
-LEXICON_MASTER_FIELD = {
-    'имя': 'name',
-    'фамилию': 'last_name',
-    'дату рождения': 'date_of_birth',
-    'описание': 'description',
-    'пол': 'sex',
-}
-
+# Словарь для инлайн кнопок
 LEXICON_BUTTONS: dict = {
     'Наши специалисты': 'masters',
     'Запись на массаж': 'booking',
@@ -53,6 +38,7 @@ LEXICON_BUTTONS: dict = {
     'Подробнее о мастере': 'about_master'
 }
 
+# Словарь для месяцев
 LEXICON_MONTH = {
     '1': 'Январь',
     '2': 'Февраль',

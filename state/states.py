@@ -1,11 +1,12 @@
 from aiogram.fsm.state import State, StatesGroup
 
-    
+
+# Cоздаем класс, наследуемый от StatesGroup, для группы состояний нашей FSM 
 class FSMEditUser(StatesGroup):
-    fill_phone = State()
-    fill_name = State()
-    save_anketa = State()
-    upload = State()
+    fill_phone = State()  # Состояние ожидания ввода номера телефона
+    fill_name = State()   # Состояние ожидания ввода имени
+    save_anketa = State() # Состояние ожидания сохраняем ли анкету
+    upload = State()      # Состояние ожидания сохранения анкеты
     
 # Cоздаем класс, наследуемый от StatesGroup, для группы состояний нашей FSM
 class FSMBooking(StatesGroup):
