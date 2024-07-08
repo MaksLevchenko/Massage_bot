@@ -20,8 +20,6 @@ year = datetime.datetime.today().year
 
 config = load_config()
 
-admin_ids = config.tg_bot.admin_ids
-
 
 # Этот хэндлер будет срабатывать после нажтия на кнопку "Заполнить анкету"
 @router.callback_query(F.data.contains('start_anketa'))

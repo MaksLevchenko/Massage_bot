@@ -1,5 +1,6 @@
 aiogram==3.0.0
 python-dotenv
-asyncpg
+asyncpg_lite
 asyncio==3.4.3
 requests
+SQLAlchemy

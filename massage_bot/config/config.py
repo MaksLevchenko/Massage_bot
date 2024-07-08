@@ -16,7 +16,6 @@ class DatabaseConfig:
 @dataclass
 class TgBot:
     token: str
-    admin_ids: list[int]
 
 @dataclass
 class Yclients:
@@ -30,11 +29,9 @@ class Config:
 
 def load_config() -> Config:
     dotenv.load_dotenv()
-    
     return Config(
         tg_bot=TgBot(
             token=os.getenv('BOT_TOKEN'),
-            admin_ids=list(map(int, os.getenv('ADMIN_IDS').split(',')))
         ),
         db=DatabaseConfig(
             database=os.getenv('NAME_DB'),
@@ -51,6 +48,6 @@ def load_config() -> Config:
 config = load_config()
 
 pg_manager = DatabaseManager(
-        db_url=f'postgresql://{config.db.db_user}:{config.db.db_password}@{config.db.db_host}:5432/{config.db.database}',
+        db_url=f'postgresql://{config.db.db_user}:{config.db.db_password}@database:5432/{config.db.database}',
         deletion_password=config.db.db_password,
     )

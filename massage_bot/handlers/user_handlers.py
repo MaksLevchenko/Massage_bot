@@ -17,8 +17,6 @@ year = datetime.datetime.today().year
 
 config = load_config()
 
-admin_ids = config.tg_bot.admin_ids
-
 masters = pars_master()
 
 # Этот хэндлер будет срабатывать на команду /start вне состояний

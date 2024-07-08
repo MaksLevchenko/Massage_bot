@@ -1,0 +1,37 @@
+services:
+  mesto_massaga:
+    build:
+      context: .
+
+    volumes:
+      - ./massage_bot:/massage_bot
+
+    env_file:
+      - .env
+    # environment:
+    #   - DB_HOST=database
+    #   - DB_NAME=env_file(NAME_DB)
+    #   - DB_USER=env_file(USER_DB)
+    #   - DB_PASS=env_file(PASS_DB)
+
+    command: >
+      sh -c "python bot.py"
+
+    depends_on:
+      - database
+    restart: always
+
+  database:
+    image: postgres:14.6-alpine
+    restart: always
+    env_file:
+      - .env
+    # environment:
+    #   - POSTGRES_DB=env_file(NAME_DB)
+    #   - POSTGRES_USER=env_file(USER_DB)
+    #   - POSTGRES_PASSWORD=env_file(PASS_DB)
+    #   - POSTGRES_PORT=5432
+    #   - POSTGRES_HOST=database
+
+    expose:
+      - 5432

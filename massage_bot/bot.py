@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String
 from handlers import user_handlers, user_booking_handlers, user_accaunt_handlers, other_handlers
 from keyboards.set_menu import set_main_menu
-from config.config import load_config
+from config.config import load_config, pg_manager
 
 import asyncio
 from aiogram import Bot, Dispatcher
@@ -19,16 +19,12 @@ BOT_TOKEN = config.tg_bot.token
 async def main():
     
     #Создаём базу данных клиентов
-    async with DatabaseManager(
-        db_url=f'postgresql://{config.db.db_user}:{config.db.db_password}@{config.db.db_host}:5432/{config.db.database}',
-        deletion_password=config.db.db_password,
-    ) as pg_manager:
+    async with pg_manager:
         columns = [
                 {"name": "user_id", "type": Integer, "options": {"primary_key": True, "autoincrement": False}},
                 {"name": "name", "type": String},
                 {"name": "phone", "type": String},
                 {"name": "comment", "type": String},]
-        
         await pg_manager.create_table(table_name='users_reg', columns=columns)
         
 

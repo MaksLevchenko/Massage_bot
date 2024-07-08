@@ -48,7 +48,6 @@ def pars_massages_mast(master_id: str) -> dict:
 def pars_massages() -> dict:
     url = "https://n80669.yclients.com/api/v1/book_services/95440"
     r = requests.get(url=url, headers=headers)
-
     massages: dict[int: Massage()] = {}
     for mass in r.json()['services']:
         massage = Massage()

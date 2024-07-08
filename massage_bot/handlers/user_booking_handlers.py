@@ -19,8 +19,6 @@ year = datetime.datetime.today().year
 
 config = load_config()
 
-admin_ids = config.tg_bot.admin_ids
-
 massages = pars_massages()
 
 # Этот хэндлер будет срабатывать на нажатие кнопки "Выбрать мастера"
