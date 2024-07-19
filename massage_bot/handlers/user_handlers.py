@@ -60,14 +60,22 @@ async def accaunt(message: Message, state: FSMContext):
         for row in await pg_manager.select_data('users_reg'):
             if row['user_id'] == id:
                 user = row
-        if user:
+    if user:
+        markup = add_keyboard(1, ("Редактировать"))
+        if user['comment']:
             await message.answer(
-                text=f"Имя: {user['name']}\n Телефон: {user['phone']}",
-                    )
+            text=f"Имя: {user['name']}\n Телефон: {user['phone']}\nКомментарий к записи: {user['comment']}",
+            reply_markup=markup
+                )
         else:
             await message.answer(
-                text=f"К сожалению у Вас ещё нет аккаунта.",
-                )
+                text=f"Имя: {user['name']}\n Телефон: {user['phone']}",
+                reply_markup=markup
+                    )
+    else:
+        await message.answer(
+            text=f"К сожалению у Вас ещё нет аккаунта.",
+            )
 
 # Этот хэндлер будет срабатывать на вызов мастеров в любых состояниях
 @router.callback_query(F.data == 'masters')
