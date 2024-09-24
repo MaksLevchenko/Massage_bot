@@ -1,8 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-update = State()
-
 # Cоздаем класс, наследуемый от StatesGroup, для группы состояний нашей FSM 
 class FSMEditUser(StatesGroup):
     fill_phone = State()  # Состояние ожидания ввода номера телефона

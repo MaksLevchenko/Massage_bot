@@ -9,5 +9,7 @@ router = Router()
 # Этот хэндлер будет срабатывать если вводить что-то не тогда, когда просят
 @router.message(StateFilter(default_state))
 async def send_echo(message: Message):
-    await message.reply(text='Извините, моя твоя не понимать')
+    await message.reply(text='Извините, я Вас не понял.\n'
+                         'Обратитесь к нашему администратору'
+                           'по телефону:\n\n+7925545200')
     
